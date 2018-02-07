@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ssh.entity">
+	<class name="com.ssh.entity.Dept" table="dept">
+		<id name="did" type="java.lang.Integer">
+			<column name="did"/>
+			<generator class="native"></generator>
+		</id>
+		<property name="dname" type="java.lang.String">
+			<column name="dname" length="20" ></column>
+		</property>
+		<set name="setEmp" cascade="delete,save-update" inverse="true">
+			<key column="did"></key>
+			<one-to-many class="com.ssh.entity.Emp" />
+		</set>
+		
+	</class>
+</hibernate-mapping>

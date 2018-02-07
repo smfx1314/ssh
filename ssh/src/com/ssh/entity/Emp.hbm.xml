@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ssh.entity">
+	<class name="com.ssh.entity.Emp" table="emp">
+		<id name="eid" type="java.lang.Integer">
+			<column name="eid"/>
+			<generator class="native"></generator>
+		</id>
+		<property name="eusername" type="java.lang.String">
+			<column name="eusername" length="20" ></column>
+		</property>
+		<property name="eage" type="java.lang.String">
+			<column name="eage" length="20" ></column>
+		</property>
+		<property name="esex" type="java.lang.String">
+			<column name="esex" length="20" ></column>
+		</property>
+		<property name="ecity" type="java.lang.String">
+			<column name="ecity" length="20" ></column>
+		</property>
+		<many-to-one name="dept" class="com.ssh.entity.Dept" column="did"></many-to-one>
+	</class>
+</hibernate-mapping>

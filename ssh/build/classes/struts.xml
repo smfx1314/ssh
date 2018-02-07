@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <package name="ssh" namespace="/" extends="struts-default">
+    <!-- 1声明拦截器 -->
+    <interceptors>
+    	<interceptor name="logininterceptor" class="com.ssh.interceptor.LoginInterceptor"></interceptor>
+    </interceptors>
+     <!-- 用户登录 -->
+     <action name="user_*" class="userAction" method="{1}">
+     <!-- 2使用自定义拦截器 -->
+     <interceptor-ref name="logininterceptor">
+     	<!-- 使用自定义拦截器时会拦截所有方法，在这配置action中的某些方法不进行拦截 
+     		name属性值：excludeMethods
+     	-->
+     	<param name="excludeMethods">login</param>
+     </interceptor-ref>
+     <!-- 3把默认拦截器手动使用一次 -->
+     <interceptor-ref name="defaultStack"></interceptor-ref>
+     	<!-- 登录成功 -->
+     	<result name="loginsuccess">/jsp/main.jsp</result>
+     	<!-- 登录失败 -->
+     	<result name="loginfail">/index.jsp</result>
+     </action>
+	
+	<!-- Emp -->
+     <action name="emp_*" class="empAction" method="{1}">
+     	<!-- 跳转到添加页面 -->
+     	<result name="addPage">/jsp/addPage.jsp</result>
+     	<!-- 重定向到显示员工信息 -->
+     	<result name="add" type="redirect">emp_findAll</result>
+     	<!-- 显示查询的员工信息 -->
+     	<result name="findAll">/jsp/emplist.jsp</result>
+     	<!-- 根据用户名查询 -->
+     	<!-- <result name="findByName" type="redirect">emp_findAll</result> -->
+     	<!-- 删除员工 -->
+     	<result name="delete" type="redirect">emp_findAll</result>
+     	<!-- 跳转到修改页面 -->
+     	<result name="updatePage">/jsp/updatePage.jsp</result>
+     	<!-- 重定向到员工列表 -->
+     	<result name="update" type="redirect">emp_findAll</result>
+     	<!-- 分页查询 -->
+     	<result name="listPage">/jsp/listPage.jsp</result>
+     </action>
+     
+     <!-- dept -->
+     <action name="dept_*" class="deptAction" method="{1}">
+     	<!-- 查询部门 -->
+     	<result name="findAll">/jsp/deptList.jsp</result>
+     	<!-- 跳转到添加页面 -->
+     	<result name="addDeptPage">/jsp/addDeptPage.jsp</result>
+     	<!-- 添加数据 -->
+     	<result name="addDept" type="redirect">dept_findAll.action</result>
+     	<!-- 删除部门 -->
+     	<result name="deleteDept" type="redirect">dept_findAll.action</result>
+     	<!-- 跳转到修改页面 -->
+     	<result name="updateDeptPage">/jsp/updateDeptPage.jsp</result>
+     	<!-- 保持修改后的数据 -->
+     	<result name="updateDept" type="redirect">dept_findAll.action</result>
+     	<!-- 分页查询部门 -->
+     	<result name="listDeptPage">/jsp/listDeptPage.jsp</result>
+     </action>
+    </package>
+</struts>

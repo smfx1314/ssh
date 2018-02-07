@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:context="http://www.springframework.org/schema/context" 
+ xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                     http://www.springframework.org/schema/beans/spring-beans.xsd 
+                     http://www.springframework.org/schema/tx 
+                     http://www.springframework.org/schema/tx/spring-tx.xsd 
+                     http://www.springframework.org/schema/aop 
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
+                     http://www.springframework.org/schema/context 
+                     http://www.springframework.org/schema/context/spring-context.xsd">	<!-- 整合hibernate -->
+	<!-- 1.配置数据库-->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+     	<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+     	<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ssh2"></property>
+     	<property name="user" value="root"></property>
+     	<property name="password" value="1234"></property>
+     </bean>
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 配置hibernate基本属性 -->
+		<property name="hibernateProperties">
+       		<props>
+       			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+       			<prop key="hibernate.show_sql">true</prop>
+       			<prop key="hibernate.hbm2ddl.auto">update</prop>
+       		</props>
+       	</property>
+       	<!-- 配置hibernate映射文件 -->
+       	<property name="mappingResources">
+       		<list>
+       			<value>com/ssh/entity/User.hbm.xml</value>
+       			<value>com/ssh/entity/Emp.hbm.xml</value>
+       			<value>com/ssh/entity/Dept.hbm.xml</value>
+       		</list>
+       	</property>
+	</bean>
+	<!-- 配置hibernate事务 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 开启事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 配置aop -->
+    <!-- <aop:config>
+    	1配置切入点
+    	<aop:pointcut expression="execution(* *.*(..))" id="pointcut"/>
+    	配置切面  把增强用到方法上
+    	<aop:aspect ref="mybook">
+    		配置增强类型，method：增强类里面使哪个方法作为前置
+    		<aop:before method="before" pointcut-ref="pointcut"/>
+    	</aop:aspect>
+    </aop:config> -->
+	
+	<!-- 引入UserBean.xml -->
+	<import resource="classpath:userBean.xml"/>
+	<!-- 引入EmpBean.xml -->
+	<import resource="classpath:empBean.xml"/>
+	<!-- 引入DeptBean.xml -->
+	<import resource="classpath:deptBean.xml"/>
+</beans>
